@@ -5,12 +5,7 @@ import { Test } from "@nestjs/testing";
 import type { RedisClientType } from "redis";
 import { createClient } from "redis";
 
-import {
-  DEFAULT_REDIS_NAME,
-  getRedisToken,
-  REDIS_CLIENT,
-  RedisModule,
-} from "./redis.module";
+import { DEFAULT_REDIS_NAME, getRedisToken, REDIS_CLIENT, RedisModule } from "./redis.module";
 
 jest.mock("redis", () => ({
   createClient: jest.fn(),
@@ -93,6 +88,47 @@ describe("RedisModule.register", () => {
     });
 
     expect(moduleRef.get(getRedisToken("jobs"))).toBe(stub);
+
+    await moduleRef.close();
+  });
+
+  it("passes database from module options to createClient (overrides clientOptions.database)", async () => {
+    buildRedisClientStub();
+
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        RedisModule.register({
+          url: "redis://localhost:6379",
+          database: 2,
+          clientOptions: { database: 0 },
+        }),
+      ],
+    }).compile();
+
+    expect(mockedCreateClient).toHaveBeenCalledWith({
+      url: "redis://localhost:6379",
+      database: 2,
+    });
+
+    await moduleRef.close();
+  });
+
+  it("omits database when module option unset (uses clientOptions only)", async () => {
+    buildRedisClientStub();
+
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        RedisModule.register({
+          url: "redis://localhost:6379",
+          clientOptions: { database: 3 },
+        }),
+      ],
+    }).compile();
+
+    expect(mockedCreateClient).toHaveBeenCalledWith({
+      url: "redis://localhost:6379",
+      database: 3,
+    });
 
     await moduleRef.close();
   });

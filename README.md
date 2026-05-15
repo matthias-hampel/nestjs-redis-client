@@ -31,7 +31,8 @@ import { RedisModule } from "nestjs-redis-client";
   imports: [
     RedisModule.register({
       url: process.env.REDIS_URL ?? "redis://localhost:6379",
-      // Optional: socket, password, database, etc.
+      database: 2,
+      // Optional: socket, TLS, etc.
       // clientOptions: { socket: { reconnectStrategy: () => 1000 } },
       isGlobal: true,
     }),

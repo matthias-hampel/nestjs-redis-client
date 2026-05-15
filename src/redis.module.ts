@@ -13,6 +13,7 @@ export const InjectRedis = (name?: string): ParameterDecorator => Inject(getRedi
 export interface RedisModuleOptions {
   name?: string;
   url?: string;
+  database?: number;
   clientOptions?: RedisClientOptions;
   isGlobal?: boolean;
 }
@@ -93,7 +94,11 @@ export class RedisModule {
     const name = options.name ?? DEFAULT_REDIS_NAME;
     const logger = new Logger(`RedisModule:${name}`);
 
-    const client = createClient({ url: options.url, ...options.clientOptions });
+    const clientOptions: RedisClientOptions = {
+      ...options.clientOptions,
+      ...(options.database !== undefined ? { database: options.database } : {}),
+    };
+    const client = createClient({ url: options.url, ...clientOptions });
 
     client.on("error", (err) => logger.error("Redis Client Error", err));
     client.on("connect", () => logger.log(`Redis Client Connected (${name})`));

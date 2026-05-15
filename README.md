@@ -1,6 +1,6 @@
 # nestjs-redis-client
 
-![NPM Last Update](https://img.shields.io/npm/last-update/nestjs-redis-client)
+![NPM Last Update](https://img.shields.io/npm/last-update/nestjs-simple-redis-client)
 ![GitHub License](https://img.shields.io/github/license/matthias-hampel/nestjs-redis-client)
 
 ## Description

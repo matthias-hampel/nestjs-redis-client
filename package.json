@@ -1,5 +1,5 @@
 {
-  "name": "nestjs-redis-client",
+  "name": "nestjs-simple-redis-client",
   "version": "0.0.1",
   "author": "matthiashampel13@gmail.com",
   "license": "MIT",

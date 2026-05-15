@@ -21,7 +21,9 @@ export interface RedisModuleAsyncOptions {
   name?: string;
   imports?: NonNullable<DynamicModule["imports"]>;
   inject?: (InjectionToken | OptionalFactoryDependency)[];
-  useFactory: (...args: unknown[]) => Promise<RedisModuleOptions> | RedisModuleOptions;
+  /** Args match resolved `inject` tokens (same typing model as Nest `FactoryProvider["useFactory"]`). */
+  // biome-ignore lint/suspicious/noExplicitAny: inject tokens resolve to instances; cannot correlate token types to param types in TS
+  useFactory: (...args: any[]) => Promise<RedisModuleOptions> | RedisModuleOptions;
   isGlobal?: boolean;
 }
 
@@ -75,7 +77,8 @@ export class RedisModule {
         {
           provide: token,
           inject: options.inject ?? [],
-          useFactory: async (...args: unknown[]) => {
+          // biome-ignore lint/suspicious/noExplicitAny: forwarded Nest DI args from inject list
+          useFactory: async (...args: any[]) => {
             const resolved = await options.useFactory(...args);
             return RedisModule.createClient({ ...resolved, name: options.name });
           },

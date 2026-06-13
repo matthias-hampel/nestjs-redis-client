@@ -1,6 +1,6 @@
 {
   "name": "nestjs-simple-redis-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "matthiashampel13@gmail.com",
   "license": "MIT",
   "keywords": [

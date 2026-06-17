@@ -15,6 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/matthias-hampel/nestjs-redis-client.git"
   },
+  "homepage": "https://github.com/matthias-hampel/nestjs-redis-client#readme",
+  "bugs": {
+    "url": "https://github.com/matthias-hampel/nestjs-redis-client/issues"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
